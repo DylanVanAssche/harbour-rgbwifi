@@ -40,7 +40,7 @@ ApplicationWindow
     allowedOrientations: Orientation.All
     _defaultPageOrientations: Orientation.All
 
-    property string version: 'V1.0'
+    property string version: 'V1.1'
     property string name: 'RGB WiFi'
     property bool ledstrip_state: true
 }
