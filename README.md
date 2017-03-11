@@ -1,10 +1,11 @@
 # harbour-rgbwifi
 Control a WiFi RGB ledstrip with your Sailfish OS phone!
+[![Demo](https://img.youtube.com/vi/CUqqFN2gjLo/0.jpg)](https://www.youtube.com/watch?v=CUqqFN2gjLo)
 
 # Setup
 In order to use RGBWiFi you need to setup some things first.
 
-## Harware
+## Hardware
 * Sailfish OS smartphone 
 * ESP8266
 * Local WiFi network
