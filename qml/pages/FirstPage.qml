@@ -1,3 +1,20 @@
+/*
+*   This file is part of RGBWiFi.
+*
+*   RGBWiFi is free software: you can redistribute it and/or modify
+*   it under the terms of the GNU General Public License as published by
+*   the Free Software Foundation, either version 3 of the License, or
+*   (at your option) any later version.
+*
+*   RGBWiFi is distributed in the hope that it will be useful,
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*   GNU General Public License for more details.
+*
+*   You should have received a copy of the GNU General Public License
+*   along with RGBWiFi.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import io.thp.pyotherside 1.3
@@ -12,6 +29,11 @@ Page {
             MenuItem {
                 text: qsTr("About")
                 onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
+            }
+
+            MenuItem {
+                text: qsTr("Settings")
+                onClicked: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
             }
         }
         contentHeight: column.height
@@ -47,7 +69,7 @@ Page {
                     }
                     else
                     {
-                        python.call('ledstrip.rgb',[0, 0, 0], function(red, green, blue) {});
+                        python.call('ledstrip.rgb',[0, 0, 0, settings.ipAddress], function(red, green, blue) {});
                         text = qsTr("OFF")
                         busy.running = true
                     }
@@ -68,7 +90,6 @@ Page {
                 {
                     update.restart();
                     busy.running = true
-                    app.dimmerValue = value
                 }
             }
 
@@ -86,7 +107,6 @@ Page {
                 {
                     update.restart();
                     busy.running = true
-                    app.redValue = value
                 }
             }
 
@@ -104,7 +124,6 @@ Page {
                 {
                     update.restart();
                     busy.running = true
-                    app.greenValue = value
                 }
             }
 
@@ -122,7 +141,6 @@ Page {
                 {
                     update.restart();
                     busy.running = true
-                    app.blueValue = value
                 }
             }
 
@@ -150,7 +168,7 @@ Page {
                             red.value = 1023
                             green.value = 0
                             blue.value = 0
-                            python.call('ledstrip.rgb',[1023 * dimmer.value, 0, 0], function(red, green, blue) {});
+                            python.call('ledstrip.rgb',[1023 * dimmer.value, 0, 0, settings.ipAddress], function(red, green, blue) {});
                             busy.running = true
                         }
                     }
@@ -169,7 +187,7 @@ Page {
                             red.value = 0
                             green.value = 1023
                             blue.value = 0
-                            python.call('ledstrip.rgb',[0, 1023 * dimmer.value, 0], function(red, green, blue) {});
+                            python.call('ledstrip.rgb',[0, 1023 * dimmer.value, 0, settings.ipAddress], function(red, green, blue) {});
                             busy.running = true
                         }
                     }
@@ -188,7 +206,7 @@ Page {
                             red.value = 0
                             green.value = 0
                             blue.value = 1023
-                            python.call('ledstrip.rgb',[0, 0, 1023 * dimmer.value], function(red, green, blue) {});
+                            python.call('ledstrip.rgb',[0, 0, 1023 * dimmer.value, settings.ipAddress], function(red, green, blue) {});
                             busy.running = true
                         }
                     }
@@ -213,7 +231,7 @@ Page {
                             red.value = 1023
                             green.value = 816
                             blue.value = 0
-                            python.call('ledstrip.rgb',[1023 * dimmer.value, 816 * dimmer.value, 0], function(red, green, blue) {});
+                            python.call('ledstrip.rgb',[1023 * dimmer.value, 816 * dimmer.value, 0, settings.ipAddress], function(red, green, blue) {});
                             busy.running = true
                         }
                     }
@@ -232,7 +250,7 @@ Page {
                             red.value = 1023
                             green.value = 1023
                             blue.value = 1023
-                            python.call('ledstrip.rgb',[1023 * dimmer.value, 1023 * dimmer.value, 1023 * dimmer.value], function(red, green, blue) {});
+                            python.call('ledstrip.rgb',[1023 * dimmer.value, 1023 * dimmer.value, 1023 * dimmer.value, settings.ipAddress], function(red, green, blue) {});
                             busy.running = true
                         }
                     }
@@ -246,10 +264,7 @@ Page {
         running: toggle.checked
         repeat: false
         interval: 500
-        onTriggered:
-        {
-            python.call('ledstrip.rgb',[dimmer.value * red.value, dimmer.value * green.value, dimmer.value * blue.value], function(red, green, blue) {});
-        }
+        onTriggered: python.call('ledstrip.rgb',[dimmer.value * red.value, dimmer.value * green.value, dimmer.value * blue.value, settings.ipAddress], function(red, green, blue) {});
     }
 
     Python {
@@ -267,11 +282,7 @@ Page {
             });
         }
 
-        onError:
-        {
-            console.log('Python ERROR: ' + traceback);
-            Clipboard.text = traceback
-        }
+        onError: console.log('Python ERROR: ' + traceback);
     }
 }
 

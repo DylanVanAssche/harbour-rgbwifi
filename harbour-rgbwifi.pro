@@ -132,5 +132,6 @@ DISTFILES += \
     qml/pages/requests/sessions.py \
     qml/pages/requests/status_codes.py \
     qml/pages/requests/structures.py \
-    qml/pages/requests/utils.py
+    qml/pages/requests/utils.py \
+    qml/pages/SettingsPage.qml
 

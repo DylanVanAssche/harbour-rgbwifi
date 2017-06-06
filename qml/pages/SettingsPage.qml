@@ -18,11 +18,28 @@
 import QtQuick 2.2
 import Sailfish.Silica 1.0
 
-Label {
-    property string labelText
+Page {
+    id: page
 
-    anchors { left: parent.left; right: parent.right; leftMargin: Theme.horizontalPageMargin; rightMargin: Theme.horizontalPageMargin }
-    font.pixelSize: Theme.fontSizeMedium
-    wrapMode: Text.WordWrap
-    text: labelText
+    Component.onDestruction: settings.ipAddress = ipAddress.text
+
+    SilicaFlickable {
+        anchors.fill: parent
+        contentHeight: settingsColumn.height
+
+        Column {
+            id: settingsColumn
+            width: page.width
+            spacing: Theme.paddingLarge
+
+            PageHeader { title: qsTr("Settings") }
+
+            TextField {
+                id: ipAddress
+                width: parent.width
+                label: qsTr("IP address"); placeholderText: label
+                text: settings.ipAddress
+            }
+        }
+    }
 }
