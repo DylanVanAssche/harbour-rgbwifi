@@ -33,19 +33,35 @@
 #endif
 
 #include <sailfishapp.h>
+#include <QtCore/QScopedPointer>
+#include <QtCore/QString>
+#include <QtGui/QGuiApplication>
+#include <QtQuick/QQuickView>
+#include <QtQml/QQmlEngine>
 
+#include "api.h"
+#include "logger.h"
+#include "os.h"
+
+#define APP_VERSION "2.0-0"
 
 int main(int argc, char *argv[])
 {
-    // SailfishApp::main() will display "qml/template.qml", if you need more
-    // control over initialization, you can use:
-    //
-    //   - SailfishApp::application(int, char *[]) to get the QGuiApplication *
-    //   - SailfishApp::createView() to get a new QQuickView * instance
-    //   - SailfishApp::pathTo(QString) to get a QUrl to a resource file
-    //
-    // To display the view, call "show()" (will show fullscreen on device).
+    // Set up qml engine.
+    QScopedPointer<QGuiApplication> app(SailfishApp::application(argc, argv));
+    QScopedPointer<QQuickView> view(SailfishApp::createView());
+    qApp->setApplicationVersion(QString(APP_VERSION));
 
-    return SailfishApp::main(argc, argv);
+    // Set application version and enable logging
+    enableLogger(true);
+
+    // Register custom QML modules
+    qmlRegisterType<API>("Harbour.RGBWiFi.API", 1, 0, "API");
+    qmlRegisterType<OS>("Harbour.RGBWiFi.SFOS", 1, 0, "SFOS");
+
+    // Start the application.
+    view->setSource(SailfishApp::pathTo("qml/harbour-rgbwifi.qml"));
+    view->show();
+
+    return app->exec();
 }
-

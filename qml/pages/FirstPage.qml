@@ -17,10 +17,32 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import io.thp.pyotherside 1.3
+import Harbour.RGBWiFi.API 1.0
+import Harbour.RGBWiFi.SFOS 1.0
 
 Page {
     id: page
+
+    API {
+        id: api
+        Component.onCompleted: api.getLight(settings.ipAddress)
+        onLightValueChanged: {
+            console.log("COLOR")
+            console.log(lightValue.r)
+            console.log(lightValue.g)
+            console.log(lightValue.b)
+            console.log(lightValue.a)
+
+            red.value = lightValue.r
+            green.value = lightValue.g
+            blue.value = lightValue.b
+            dimmer.value = lightValue.a
+        }
+    }
+
+    SFOS {
+        id: sfos
+    }
 
     SilicaFlickable {
         anchors.fill: parent
@@ -43,7 +65,7 @@ Page {
             width: page.width
 
             PageHeader {
-                title: app.name
+                title: sfos.appNamePretty
 
                 BusyIndicator {
                     id: busy
@@ -51,103 +73,65 @@ Page {
                     anchors.leftMargin: Theme.horizontalPageMargin
                     anchors.verticalCenter: parent.verticalCenter
                     size: BusyIndicatorSize.Small
-                    running: false
+                    running: api.busy
                 }
             }
 
             TextSwitch {
                 id: toggle
-                text: qsTr("ON")
-                checked: app.ledstrip_state
+                text: checked? qsTr("ON"): qsTr("OFF")
                 description: qsTr("Switch the RGB ledstrip ON/OFF")
-                onCheckedChanged: {
-                    if(checked)
-                    {
-                        update.restart()
-                        text = qsTr("ON")
-                        busy.running = true
-                    }
-                    else
-                    {
-                        python.call('ledstrip.rgb',[0, 0, 0, settings.ipAddress], function(red, green, blue) {});
-                        text = qsTr("OFF")
-                        busy.running = true
-                    }
-                }
+                enabled: !api.busy
+                checked: dimmer.value > 0 || red.value > 0 || green.value > 0 || blue.value > 0
+                onClicked: checked? api.setLight(Qt.rgba(red.value, green.value, blue.value, dimmer.value), settings.ipAddress): api.setLight(Qt.black, settings.ipAddress)
             }
 
             Slider {
                 id: dimmer
                 width: parent.width
-                value: 1
+                value: 0
                 visible: toggle.checked
-                minimumValue: 0
-                maximumValue: 1
-                stepSize: 0.05
+                enabled: !api.busy
+                stepSize: 0.01
                 valueText: (value * 100).toFixed(0)  + " %"
                 label: qsTr("Dimmer")
-                onValueChanged:
-                {
-                    update.restart();
-                    busy.running = true
-                }
+                onReleased: api.setLight(Qt.rgba(red.value, green.value, blue.value, dimmer.value), settings.ipAddress)
             }
 
             Slider {
                 id: red
                 width: parent.width
-                value: 1023
+                value: 0
                 visible: toggle.checked
-                minimumValue: 0
-                maximumValue: 1023
-                stepSize: 1
-                valueText: ((value/1023)*100).toFixed(0)  + " %"
+                enabled: !api.busy
+                stepSize: 0.01
+                valueText: (value*100).toFixed(0)  + " %"
                 label: qsTr("Red")
-                onValueChanged:
-                {
-                    update.restart();
-                    busy.running = true
-                }
+                onReleased: api.setLight(Qt.rgba(red.value, green.value, blue.value, dimmer.value), settings.ipAddress)
             }
 
             Slider {
                 id: green
                 width: parent.width
-                value: 1023
+                value: 0
                 visible: toggle.checked
-                minimumValue: 0
-                maximumValue: 1023
-                stepSize: 1
-                valueText: ((value/1023)*100).toFixed(0)  + " %"
+                enabled: !api.busy
+                stepSize: 0.01
+                valueText: (value*100).toFixed(0)  + " %"
                 label: qsTr("Green")
-                onValueChanged:
-                {
-                    update.restart();
-                    busy.running = true
-                }
+                onReleased: api.setLight(Qt.rgba(red.value, green.value, blue.value, dimmer.value), settings.ipAddress)
             }
 
             Slider {
                 id: blue
                 width: parent.width
-                value: 1023
+                value: 0
                 visible: toggle.checked
-                minimumValue: 0
-                maximumValue: 1023
-                stepSize: 1
-                valueText: ((value/1023)*100).toFixed(0)  + " %"
+                enabled: !api.busy
+                stepSize: 0.01
+                valueText: (value*100).toFixed(0)  + " %"
                 label: qsTr("Blue")
-                onValueChanged:
-                {
-                    update.restart();
-                    busy.running = true
-                }
-            }
-
-            Rectangle {
-                width: parent.width
-                height: Theme.paddingLarge
-                color: "transparent"
+                onReleased: api.setLight(Qt.rgba(red.value, green.value, blue.value, dimmer.value), settings.ipAddress)
             }
 
             Row {
@@ -162,15 +146,8 @@ Page {
 
                     MouseArea {
                         anchors.fill: parent
-                        onClicked:
-                        {
-                            update.stop()
-                            red.value = 1023
-                            green.value = 0
-                            blue.value = 0
-                            python.call('ledstrip.rgb',[1023 * dimmer.value, 0, 0, settings.ipAddress], function(red, green, blue) {});
-                            busy.running = true
-                        }
+                        enabled: !api.busy
+                        onClicked: api.setLight(Qt.rgba(1,0,0,1), settings.ipAddress)
                     }
                 }
 
@@ -181,15 +158,8 @@ Page {
 
                     MouseArea {
                         anchors.fill: parent
-                        onClicked:
-                        {
-                            update.stop()
-                            red.value = 0
-                            green.value = 1023
-                            blue.value = 0
-                            python.call('ledstrip.rgb',[0, 1023 * dimmer.value, 0, settings.ipAddress], function(red, green, blue) {});
-                            busy.running = true
-                        }
+                        enabled: !api.busy
+                        onClicked: api.setLight(Qt.rgba(0,1,0,1), settings.ipAddress)
                     }
                 }
 
@@ -200,15 +170,8 @@ Page {
 
                     MouseArea {
                         anchors.fill: parent
-                        onClicked:
-                        {
-                            update.stop()
-                            red.value = 0
-                            green.value = 0
-                            blue.value = 1023
-                            python.call('ledstrip.rgb',[0, 0, 1023 * dimmer.value, settings.ipAddress], function(red, green, blue) {});
-                            busy.running = true
-                        }
+                        enabled: !api.busy
+                        onClicked: api.setLight(Qt.rgba(0,0,1,1), settings.ipAddress)
                     }
                 }
             }
@@ -225,15 +188,8 @@ Page {
 
                     MouseArea {
                         anchors.fill: parent
-                        onClicked:
-                        {
-                            update.stop()
-                            red.value = 1023
-                            green.value = 816
-                            blue.value = 0
-                            python.call('ledstrip.rgb',[1023 * dimmer.value, 816 * dimmer.value, 0, settings.ipAddress], function(red, green, blue) {});
-                            busy.running = true
-                        }
+                        enabled: !api.busy
+                        onClicked: api.setLight(Qt.rgba(1,1,0,1), settings.ipAddress)
                     }
                 }
 
@@ -244,46 +200,11 @@ Page {
 
                     MouseArea {
                         anchors.fill: parent
-                        onClicked:
-                        {
-                            update.stop()
-                            red.value = 1023
-                            green.value = 1023
-                            blue.value = 1023
-                            python.call('ledstrip.rgb',[1023 * dimmer.value, 1023 * dimmer.value, 1023 * dimmer.value, settings.ipAddress], function(red, green, blue) {});
-                            busy.running = true
-                        }
+                        enabled: !api.busy
+                        onClicked: api.setLight(Qt.rgba(1,1,1,1), settings.ipAddress)
                     }
                 }
             }
         }
     }
-
-    Timer {
-        id: update
-        running: toggle.checked
-        repeat: false
-        interval: 500
-        onTriggered: python.call('ledstrip.rgb',[dimmer.value * red.value, dimmer.value * green.value, dimmer.value * blue.value, settings.ipAddress], function(red, green, blue) {});
-    }
-
-    Python {
-        id: python
-
-        Component.onCompleted:
-        {
-            addImportPath(Qt.resolvedUrl('.'));
-            importModule('ledstrip', function() {});
-
-            setHandler('result', function(result)
-            {
-                console.log(result)
-                busy.running = false;
-            });
-        }
-
-        onError: console.log('Python ERROR: ' + traceback);
-    }
 }
-
-
