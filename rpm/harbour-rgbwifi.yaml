@@ -1,6 +1,6 @@
 Name: harbour-rgbwifi
-Summary: Ledstrip RGB controller over Wifi
-Version: 1.1
+Summary: My Sailfish OS Application
+Version: 0.1
 Release: 1
 # The contents of the Group field should be one of the groups listed here:
 # http://gitorious.org/meego-developer-tools/spectacle/blobs/master/data/GROUPS
@@ -12,7 +12,7 @@ License: LICENSE
 Sources:
 - '%{name}-%{version}.tar.bz2'
 Description: |
-  RGB-WiFi is a Sailfish OS application to control RGB ledstrips over WiFi.
+  Short description of my Sailfish OS Application
 Configure: none
 # The qtc5 builder inserts macros to allow QtCreator to have fine
 # control over qmake/make execution
@@ -43,4 +43,3 @@ Files:
 
 # For more information about yaml and what's supported in Sailfish OS
 # build system, please see https://wiki.merproject.org/wiki/Spectacle
-

@@ -17,9 +17,14 @@
 
 import QtQuick 2.2
 import Sailfish.Silica 1.0
+import Harbour.RGBWiFi.SFOS 1.0
 
 Page {
     id: page
+
+    SFOS {
+        id: sfos
+    }
 
     SilicaFlickable {
         anchors.fill: parent
@@ -30,9 +35,9 @@ Page {
             width: page.width
             spacing: Theme.paddingLarge
 
-            PageHeader { title: qsTr("%1 V%2").arg(app.name).arg(app.version)}
+            PageHeader { title: qsTr("%1 V%2").arg(sfos.appNamePretty).arg(sfos.appVersion)}
 
-            SectionHeader { text: qsTr("What's %1?").arg(app.name) }
+            SectionHeader { text: qsTr("What's %1?").arg(sfos.appNamePretty) }
             TextLabel { labelText: qsTr("Control your RGB ledstrip over WiFi with an ESP8266 WiFi module.") }
 
             SectionHeader { text: qsTr("Licensing") }
@@ -40,7 +45,7 @@ Page {
 
             SectionHeader { text: qsTr("Developer & source code") }
             GlasButton { link: "https://github.com/modulebaan"; iconSource: "../resources/images/icon-github.png"; iconText: "Dylan Van Assche" }
-            GlasButton { link: "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=XTDV5P8JQTHT4"; iconSource: "../resources/images/icon-paypal.png"; iconText: qsTr("Donate with %1").arg(app.name) }
+            GlasButton { link: "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=XTDV5P8JQTHT4"; iconSource: "../resources/images/icon-paypal.png"; iconText: qsTr("Donate with %1").arg("PayPal") }
             GlasButton { link: "https://github.com/modulebaan/harbour-rgbwifi"; iconSource: "../resources/images/icon-code.png"; iconText: "source code" }
 
             SectionHeader { text: qsTr("Powered by") }

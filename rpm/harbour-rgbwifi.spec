@@ -12,8 +12,8 @@ Name:       harbour-rgbwifi
 %{!?qtc_qmake5:%define qtc_qmake5 %qmake5}
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
-Summary:    Ledstrip RGB controller over Wifi
-Version:    1.1
+Summary:    My Sailfish OS Application
+Version:    0.1
 Release:    1
 Group:      Qt/Qt
 License:    LICENSE
@@ -28,7 +28,7 @@ BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  desktop-file-utils
 
 %description
-RGB-WiFi is a Sailfish OS application to control RGB ledstrips over WiFi.
+Short description of my Sailfish OS Application
 
 
 %prep
