@@ -45,6 +45,7 @@ ApplicationWindow
         path: "/apps/harbour-rgbwifi/settings"
 
         property string ipAddress: "192.168.0.127" // Default IP
+        property color lastColor
     }
 }
 

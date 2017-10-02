@@ -1,8 +1,10 @@
 #ifndef OS_H
 #define OS_H
 
-#include <QtGlobal>
-#include <sailfishapp.h>
+#include <sailfishapp/sailfishapp.h>
+#include <QtGui/QGuiApplication>
+#include <QtCore/QtGlobal>
+#include <QtCore/QDir>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QList>

@@ -33,11 +33,18 @@ void API::setLight(QColor color, QString ipAddress) {
     m_busy = true;
     emit busyChanged();
 
-    QString url = "http://%1/light?red=%2&green=%3&blue=%4&dimmer=%5";
-    qInfo() << url.arg(ipAddress, QString::number(color.red()*4), QString::number(color.green()*4), QString::number(color.blue()*4), QString::number(color.alpha()*4));
+    // Build URL
+    QUrl url(QString("http://%1/light").arg(ipAddress));
+    QUrlQuery query;
+    query.addQueryItem("red", QString::number(color.red()*4));
+    query.addQueryItem("green", QString::number(color.green()*4));
+    query.addQueryItem("blue", QString::number(color.blue()*4));
+    query.addQueryItem("dimmer", QString::number(qRound(color.alpha()/2.55)));
+    url.setQuery(query);
+    qInfo() << "URL:" << url;
 
     // Range 0 - 1023 while QT colors 0 - 255
-    QNetworkRequest request(url.arg(ipAddress, QString::number(color.red()*4), QString::number(color.green()*4), QString::number(color.blue()*4), QString::number(qRound(color.alpha()/2.55))));
+    QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     request.setHeader(QNetworkRequest::UserAgentHeader, useragent);
     QNAM->get(request);
@@ -49,9 +56,11 @@ void API::getLight(QString ipAddress) {
     m_busy = true;
     emit busyChanged();
 
-    QString url = "http://%1/light";
+    // Build URL
+    QUrl url(QString("http://%1/light").arg(ipAddress));
+    qInfo() << "URL:" << url;
 
-    QNetworkRequest request(url.arg(ipAddress));
+    QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     request.setHeader(QNetworkRequest::UserAgentHeader, useragent);
     QNAM->get(request);

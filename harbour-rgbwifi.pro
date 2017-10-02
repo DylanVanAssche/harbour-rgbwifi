@@ -20,7 +20,10 @@ QT += network \
 
 # Disable debug and warning messages while releasing for security reasons
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT \
-    QT_NO_WARNING_OUTPUT
+QT_NO_WARNING_OUTPUT
+
+# APP_VERSION retrieved from .spec file
+DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
 
 SOURCES += src/harbour-rgbwifi.cpp \
     src/api.cpp \
@@ -31,8 +34,6 @@ DISTFILES += qml/harbour-rgbwifi.qml \
     qml/cover/CoverPage.qml \
     qml/pages/FirstPage.qml \
     qml/pages/SecondPage.qml \
-    rpm/harbour-rgbwifi.changes.in \
-    rpm/harbour-rgbwifi.changes.run.in \
     rpm/harbour-rgbwifi.spec \
     rpm/harbour-rgbwifi.yaml \
     translations/*.ts \
@@ -40,19 +41,14 @@ DISTFILES += qml/harbour-rgbwifi.qml \
     qml/pages/TextLabel.qml \
     qml/pages/SettingsPage.qml \
     qml/pages/AboutPage.qml \
-    qml/pages/GlasButton.qml
+    qml/pages/GlasButton.qml \
+    rpm/harbour-rgbwifi.changes
 
 SAILFISHAPP_ICONS = 86x86 108x108 128x128 256x256
 
 # to disable building translations every time, comment out the
 # following CONFIG line
 CONFIG += sailfishapp_i18n
-
-# German translation is enabled as an example. If you aren't
-# planning to localize your app, remember to comment out the
-# following TRANSLATIONS line. And also do not forget to
-# modify the localized app name in the the .desktop file.
-TRANSLATIONS += translations/harbour-rgbwifi-de.ts
 
 HEADERS += \
     src/api.h \
