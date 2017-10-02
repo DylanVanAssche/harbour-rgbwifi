@@ -1,6 +1,20 @@
-* Mon Jan 16 2017 Dylan Van Assche <dylan.van.assche@protonmail.com> 0.1.1-1
+* Mon Oct 2 2017 Dylan Van Assche <dylan.van.assche@protonmail.com> 2.1-0
+- [MINOR BUGFIX] Fixed RPM release information
+- [NEW] Last state is remembered (Github issue #5)
+- [NEW] Simple cover
+- [IMPROVEMENT] Use QUrl and QUrlQuery to build URL (Github issue #6)
+- [IMPROVEMENT] Updated README to the latest development (Github issue #7)
+- [IMPROVEMENT] Shared code updated
+- [IMPROVEMENT] Release is automatically read from RPM YAML file
+- [IMPROVEMENT] Removed obselete Python code (Github issue #9)
+
+* Mon Sep 12 2017 Dylan Van Assche <dylan.van.assche@protonmail.com> 2.0-0
+- [IMPROVEMENT] Moved to C++ backend
+- [IMPROVEMENT] IPAddress setting
+
+* Mon Jan 16 2017 Dylan Van Assche <dylan.van.assche@protonmail.com> 1.1-1
 - [MINOR BUGFIX] Fixed Github issue #1
 - [IMPROVEMENT] Updated About page
 
-* Fri Sep 23 2016 Dylan Van Assche <dylan.van.assche@protonmail.com> 0.1.0-1
+* Fri Sep 23 2016 Dylan Van Assche <dylan.van.assche@protonmail.com> 1.0-1
 - Initial release

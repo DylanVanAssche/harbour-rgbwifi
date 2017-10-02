@@ -1,21 +1,23 @@
 Name: harbour-rgbwifi
-Summary: My Sailfish OS Application
-Version: 0.1
-Release: 1
+Summary: Control your RGB ledstrip over WiFi
+Version: 2.1
+Release: 0
 # The contents of the Group field should be one of the groups listed here:
 # http://gitorious.org/meego-developer-tools/spectacle/blobs/master/data/GROUPS
 Group: Qt/Qt
-URL: http://example.org/
-License: LICENSE
+URL: http://www.github.com/DylanVanAssche/harbour-rgbwifi
+License: GPLv3
 # This must be generated before uploading a package to a remote build service.
 # Usually this line does not need to be modified.
 Sources:
 - '%{name}-%{version}.tar.bz2'
 Description: |
-  Short description of my Sailfish OS Application
+  Control your RGB ledstrip over WiFi
 Configure: none
 # The qtc5 builder inserts macros to allow QtCreator to have fine
 # control over qmake/make execution
+QMakeOptions:
+  - VERSION=%{version}
 Builder: qtc5
 
 # This section specifies build dependencies that are resolved using pkgconfig.
@@ -32,7 +34,8 @@ PkgConfigBR:
 
 # Runtime dependencies which are not automatically detected
 Requires:
-  - sailfishsilica-qt5 >= 0.10.9 
+  - sailfishsilica-qt5 >= 0.10.9
+  - nemo-qml-plugin-configuration-qt5 >= 0.0.1
 
 # All installed files
 Files:

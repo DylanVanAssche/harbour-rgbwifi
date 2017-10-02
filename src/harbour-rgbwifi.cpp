@@ -43,8 +43,6 @@
 #include "logger.h"
 #include "os.h"
 
-#define APP_VERSION "2.0-0"
-
 int main(int argc, char *argv[])
 {
     // Set up qml engine.

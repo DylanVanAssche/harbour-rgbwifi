@@ -12,15 +12,16 @@ Name:       harbour-rgbwifi
 %{!?qtc_qmake5:%define qtc_qmake5 %qmake5}
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
-Summary:    My Sailfish OS Application
-Version:    0.1
-Release:    1
+Summary:    Control your RGB ledstrip over WiFi
+Version:    2.1
+Release:    0
 Group:      Qt/Qt
-License:    LICENSE
-URL:        http://example.org/
+License:    GPLv3
+URL:        http://www.github.com/DylanVanAssche/harbour-rgbwifi
 Source0:    %{name}-%{version}.tar.bz2
 Source100:  harbour-rgbwifi.yaml
 Requires:   sailfishsilica-qt5 >= 0.10.9
+Requires:   nemo-qml-plugin-configuration-qt5 >= 0.0.1
 BuildRequires:  pkgconfig(sailfishapp) >= 1.0.2
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
@@ -28,7 +29,7 @@ BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  desktop-file-utils
 
 %description
-Short description of my Sailfish OS Application
+Control your RGB ledstrip over WiFi
 
 
 %prep
@@ -41,7 +42,8 @@ Short description of my Sailfish OS Application
 # >> build pre
 # << build pre
 
-%qtc_qmake5 
+%qtc_qmake5  \
+    VERSION=%{version}
 
 %qtc_make %{?_smp_mflags}
 
