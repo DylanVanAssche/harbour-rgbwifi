@@ -23,9 +23,6 @@ import Harbour.RGBWiFi.SFOS 1.0
 Page {
     id: page
 
-    // Remember the last state
-    Component.onDestruction: settings.lastColor = Qt.rgba(red.value, green.value, blue.value, dimmer.value)
-
     API {
         id: api
         Component.onCompleted: api.getLight(settings.ipAddress)
@@ -79,7 +76,7 @@ Page {
                 text: checked? qsTr("ON"): qsTr("OFF")
                 description: qsTr("Switch the RGB ledstrip ON/OFF")
                 enabled: !api.busy
-                checked: dimmer.value > 0 || red.value > 0 || green.value > 0 || blue.value > 0
+                checked: dimmer.value > 0 && (red.value > 0 || green.value > 0 || blue.value > 0)
                 onClicked: {
                     if(checked) {
                          api.setLight(settings.lastColor, settings.ipAddress)

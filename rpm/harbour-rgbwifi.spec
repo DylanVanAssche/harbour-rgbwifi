@@ -14,7 +14,7 @@ Name:       harbour-rgbwifi
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Control your RGB ledstrip over WiFi
 Version:    2.1
-Release:    0
+Release:    1
 Group:      Qt/Qt
 License:    GPLv3
 URL:        http://www.github.com/DylanVanAssche/harbour-rgbwifi
