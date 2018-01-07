@@ -5,7 +5,6 @@
  *      - release name
  *      - version
  *      - device
- *      - network status (DBus)
  *      - notifications
  *      - XDG_CACHE_HOME
  *      - XDG_CONFIG_HOME
@@ -41,7 +40,11 @@ OS::OS()
 QList<QPair<QString, QString>> OS::extractFileData(QString location, QStringList querryList) {
     QFile file(location);
     QList<QPair<QString, QString>> dataList;
-    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    // Return empty dataList if file couldn't be opened
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qCritical() << "Opening file" << location << "failed";
+        return dataList;
+    }
     QTextStream content(&file);
     content.setAutoDetectUnicode(true);
 
